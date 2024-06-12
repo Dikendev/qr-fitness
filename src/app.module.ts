@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { WorkoutPlanModule } from './workout-plan/workout-plan.module';
+import { DatabaseModule } from './external/database/database.module';
+import { QrCodeModule } from './external/qr-code/qr-code.module';
+import { MainModule } from './main/main.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [WorkoutPlanModule, DatabaseModule, QrCodeModule, MainModule],
 })
 export class AppModule {}

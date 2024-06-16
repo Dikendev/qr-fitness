@@ -15,4 +15,13 @@ describe('InMemoryService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  it('should create successfully', () => {
+    const data = { name: 'test' };
+
+    service.create(data);
+    console.log(service.dataBase);
+
+    expect(service.dataBase).toContainEqual(data);
+  });
 });

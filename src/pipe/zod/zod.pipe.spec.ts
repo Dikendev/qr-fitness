@@ -35,7 +35,7 @@ describe('ZodPipe', () => {
     try {
       (() => zodPipe.transform(testData, null))();
     } catch (error: any) {
-w      expect(error).toBeInstanceOf(ZodError);
+      expect(error).toBeInstanceOf(ZodError);
       expect(error.errors[0].message).toBe('Invalid email');
     }
   });

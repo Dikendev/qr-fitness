@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { DataBaseRepository } from '../repository/database-repository';
+import { InMemoryData, InMemoryDataResponseType } from '../database.service';
 
 @Injectable()
 export class InMemoryService implements DataBaseRepository {
-  dataBase: any[] = [];
+  dataBase: InMemoryData[] = [];
 
   constructor() {}
 
@@ -11,10 +12,14 @@ export class InMemoryService implements DataBaseRepository {
     this.dataBase.push(data);
   }
 
-  get(): void {
+  get(key: string): InMemoryDataResponseType {
     this.dataBase.forEach((data) => {
-      console.log(data);
+      if (data.key === key) {
+        return data;
+      }
     });
+
+    throw new BadGatewayException('Data not found');
   }
 
   update(): void {

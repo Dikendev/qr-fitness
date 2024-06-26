@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WorkoutPlanService } from '../workout-plan.service';
+import { WorkoutPlanService } from '../workout-plan-prisma.service';
 
 describe('WorkoutPlanService', () => {
   let service: WorkoutPlanService;

@@ -7,9 +7,14 @@ export const UserSchema = z.object({
     .string({ message: 'Need inform a email' })
     .trim()
     .email({ message: 'Invalid email' }),
-  name: z.string({ message: 'Need inform a name' }).trim().min(3).max(255),
+  name: z
+    .string({ message: 'Need inform a name' })
+    .trim()
+    .min(3)
+    .max(255)
+    .nullable(),
   password: z.string({ message: 'Need inform a password' }).min(6).max(255),
-  workouts: z.array(WorkoutPlanSchema).optional(),
+  workouts: z.array(WorkoutPlanSchema),
   createdAt: z.date(),
   updatedAt: z.date(),
 });
@@ -17,8 +22,9 @@ export const UserSchema = z.object({
 export const CreateUserSchema = UserSchema.pick({
   email: true,
   name: true,
+  workouts: true,
   password: true,
-}).partial();
+});
 
 const UserResponseSchema = UserSchema.omit({
   password: true,

@@ -7,7 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { PrismaService } from './prisma/prisma.service';
 import { UserPrismaService } from './user/user-prisma.service';
-import { ExerciseModule } from './exercice/exercice.module';
+import { ExerciseModule } from './exercise/exercise.module';
 
 @Module({
   imports: [

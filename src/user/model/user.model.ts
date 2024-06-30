@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { WorkoutPlanSchema } from '../../workout-plan/model/workout-plan-dto';
 
 export const UserSchema = z.object({
-  id: z.string().cuid(),
+  id: z.string().cuid().optional(),
   email: z
     .string({ message: 'Need inform a email' })
     .trim()
@@ -14,9 +14,9 @@ export const UserSchema = z.object({
     .max(255)
     .nullable(),
   password: z.string({ message: 'Need inform a password' }).min(6).max(255),
-  workouts: z.array(WorkoutPlanSchema),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  workouts: z.array(WorkoutPlanSchema).optional(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional(),
 });
 
 export const CreateUserSchema = UserSchema.pick({

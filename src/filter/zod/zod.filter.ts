@@ -15,8 +15,9 @@ export class ZodFilter<T extends ZodError> implements ExceptionFilter {
   }
 
   private minimalError(exception: ZodError): MinimalError[] {
-    return exception.errors.map((error) => ({
-      path: error.path[0],
+    return exception.errors.map((error: any) => ({
+      path: error.path[error.path.length - 1],
+      expected: error.expected,
       message: error.message,
     }));
   }

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { WorkoutPlanModule } from './workout-plan/workout-plan.module';
 import { DatabaseModule } from './external/database/database.module';
 import { QrCodeModule } from './external/qr-code/qr-code.module';
 import { MainModule } from './main/main.module';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from './user/user.module';
 import { PrismaService } from './prisma/prisma.service';
-import { UserPrismaService } from './user/user-prisma.service';
-import { ExerciseModule } from './exercise/exercise.module';
+import { ExerciseModule } from './main/exercise/exercise.module';
+import { UserPrismaService } from './main/user/user-prisma.service';
+import { UserModule } from './main/user/user.module';
+import { WorkoutPlanModule } from './main/workout-plan/workout-plan.module';
 
 @Module({
   imports: [

@@ -1,7 +1,6 @@
 import { z, ZodError } from 'zod';
 import { ZodPipe } from './zod.pipe';
-import { CreateUserDto } from '../../user/model/create-user-dto';
-import { BadRequestException } from '@nestjs/common';
+import { CreateUserDto } from '../../main/user/model/user.model';
 
 describe('ZodPipe', () => {
   let zodPipe: ZodPipe;
@@ -14,6 +13,7 @@ describe('ZodPipe', () => {
   beforeEach(() => {
     zodPipe = new ZodPipe(mockSchema);
   });
+
   it('should be defined', () => {
     expect(new ZodPipe(mockSchema)).toBeDefined();
   });
@@ -33,7 +33,10 @@ describe('ZodPipe', () => {
     };
 
     try {
-      (() => zodPipe.transform(testData, null))();
+      (() =>
+        zodPipe.transform(testData, {
+          type: 'body',
+        }))();
     } catch (error: any) {
       expect(error).toBeInstanceOf(ZodError);
       expect(error.errors[0].message).toBe('Invalid email');

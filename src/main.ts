@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { PrismaClientExceptionFilter } from './prisma-client-exception/prisma-client-exception.filter';
 import { ZodFilter } from './filter/zod/zod.filter';
+import { ExceptionHandleFilter } from './filter/exception/exception-handle.filter';
 
 const PORT = process.env.PORT || 3000;
 
@@ -11,9 +12,13 @@ const PORT = process.env.PORT || 3000;
   const logger = Logger;
   const { httpAdapter } = app.get(HttpAdapterHost);
 
-  app.useGlobalFilters(new ZodFilter());
+  app.useGlobalFilters(
+    new ZodFilter(),
+    new PrismaClientExceptionFilter(httpAdapter),
+    new ExceptionHandleFilter(),
+  );
+
   app.setGlobalPrefix('api');
-  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
   await app.listen(PORT, () => {
     logger.log(`Listening on: ${PORT}`, 'Bootstrap');

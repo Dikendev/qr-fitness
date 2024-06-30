@@ -8,12 +8,12 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserRepository } from './repository/user.repository';
-import { ZodPipe } from '../pipe/zod/zod.pipe';
 import {
   CreateUserDto,
   CreateUserSchema,
   UserResponse,
 } from './model/user.model';
+import { ZodPipe } from '../../pipe/zod/zod.pipe';
 
 @Controller('user')
 export class UserController {
@@ -23,13 +23,12 @@ export class UserController {
   async create(
     @Body(new ZodPipe(CreateUserSchema)) body: CreateUserDto,
   ): Promise<UserResponse> {
-    console.log(body);
     return this.userRepository.create(body);
   }
 
-  @Get()
-  async list(): Promise<UserResponse[]> {
-    return this.userRepository.list();
+  @Get('list')
+  async list(@Query('full') fullInformation: boolean): Promise<UserResponse[]> {
+    return this.userRepository.list(fullInformation);
   }
 
   @Get('find')

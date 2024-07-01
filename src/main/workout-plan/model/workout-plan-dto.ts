@@ -1,18 +1,7 @@
 import { z } from 'zod';
-import { Exercise, ExerciseSchema } from '../../exercise/model/exercise.model';
+import { ExerciseSchema } from '../../exercise/model/exercise.model';
 
-export interface WorkoutPlan {
-  id?: string;
-  name: string;
-  description: string;
-  workoutType: string;
-  userId?: string;
-  exercises?: Exercise[];
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export const WorkoutPlanSchema: z.ZodSchema<WorkoutPlan> = z.object({
+export const WorkoutPlanSchema = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
   description: z.string(),
@@ -23,4 +12,11 @@ export const WorkoutPlanSchema: z.ZodSchema<WorkoutPlan> = z.object({
   updatedAt: z.date().optional(),
 });
 
-export type WorkoutPlanDto = z.infer<typeof WorkoutPlanSchema>;
+export const WorkoutPlanCreateSchema = WorkoutPlanSchema.omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type CreateWorkoutPlanDto = z.infer<typeof WorkoutPlanCreateSchema>;
+export type WorkoutPlanResponse = z.infer<typeof WorkoutPlanSchema>;

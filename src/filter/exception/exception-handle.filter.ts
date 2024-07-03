@@ -11,7 +11,6 @@ export class ExceptionHandleFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const context = host.switchToHttp();
     const response = context.getResponse();
-    const request = context.getRequest();
     const status = exception.getStatus()
       ? exception.getStatus()
       : HttpStatus.INTERNAL_SERVER_ERROR;
@@ -23,9 +22,7 @@ export class ExceptionHandleFilter implements ExceptionFilter {
 
     response.status(status).json({
       statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      error,
+      message: error,
     });
   }
 }

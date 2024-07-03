@@ -45,7 +45,7 @@ export class ExerciseController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') param: { id: string }): Promise<string> {
-    return this.exerciseRepository.delete(param.id);
+  async delete(@Param('id') id: string): Promise<string> {
+    return this.exerciseRepository.delete(id);
   }
 }

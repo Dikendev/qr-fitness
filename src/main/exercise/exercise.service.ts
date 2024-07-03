@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ExerciseRepository } from './repository/exercise.repository';
 import {
@@ -30,13 +35,9 @@ export class ExerciseService implements ExerciseRepository {
         select: this.exercisesSelectResponse.select,
       });
 
-      if (!exercise) {
-        throw new BadRequestException('Exercise not created');
-      }
-
       return exercise;
     } catch (error) {
-      throw new BadRequestException();
+      throw error;
     }
   }
 
@@ -48,12 +49,12 @@ export class ExerciseService implements ExerciseRepository {
       });
 
       if (!exercise) {
-        throw new BadRequestException('Exercise not found');
+        throw new HttpException('Exercise not found', HttpStatus.NOT_FOUND);
       }
 
       return exercise;
     } catch (error) {
-      throw new BadRequestException();
+      throw error;
     }
   }
 
@@ -64,12 +65,15 @@ export class ExerciseService implements ExerciseRepository {
       });
 
       if (!exerciseList) {
-        throw new BadRequestException('Exercise list not found');
+        throw new HttpException(
+          'Exercise list not found',
+          HttpStatus.NOT_FOUND,
+        );
       }
 
       return exerciseList;
     } catch (error) {
-      throw new BadRequestException();
+      throw error;
     }
   }
 
@@ -82,12 +86,15 @@ export class ExerciseService implements ExerciseRepository {
       });
 
       if (!exercise) {
-        throw new BadRequestException('Exercise not updated');
+        throw new HttpException(
+          'Exercise not updated',
+          HttpStatus.UNPROCESSABLE_ENTITY,
+        );
       }
 
       return exercise;
     } catch (error) {
-      throw new BadRequestException();
+      throw error;
     }
   }
 
@@ -99,12 +106,12 @@ export class ExerciseService implements ExerciseRepository {
       });
 
       if (!exercise) {
-        throw new BadRequestException('Exercise not found');
+        throw new HttpException('Exercise not found', HttpStatus.NOT_FOUND);
       }
 
       return `Exercise id: ${id} - name: ${exercise.name} deleted successfully`;
     } catch (error) {
-      throw new BadRequestException();
+      throw error;
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { WorkoutPlanRepository } from './repository/workout-plan-repository';
 import {
   CreateWorkoutPlanDto,
@@ -22,5 +22,15 @@ export class WorkoutPlanController {
   @Get('list')
   async list(): Promise<WorkoutPlanResponse[]> {
     return this.workoutPlanRepository.list();
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<WorkoutPlanResponse> {
+    return this.workoutPlanRepository.findById(id);
+  }
+
+  @Delete(':id')
+  async delete(@Param('id') id: string): Promise<string> {
+    return this.workoutPlanRepository.delete(id);
   }
 }

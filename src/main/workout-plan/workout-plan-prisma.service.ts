@@ -91,4 +91,29 @@ export class WorkoutPlanService implements WorkoutPlanRepository {
       throw new Error();
     }
   }
+
+  async findById(id: string): Promise<WorkoutPlanResponse> {
+    const workoutPlan = await this.prisma.workout.findUnique({
+      where: { id },
+      select: this.workoutPlanSelect.select,
+    });
+
+    if (!workoutPlan) {
+      throw new Error('Workout plan not found');
+    }
+
+    return workoutPlan;
+  }
+
+  async delete(id: string): Promise<string> {
+    try {
+      await this.prisma.workout.delete({
+        where: { id },
+      });
+
+      return `Workout id: ${id} plan deleted`;
+    } catch (error) {
+      throw new Error('Failed to delete workout plan');
+    }
+  }
 }

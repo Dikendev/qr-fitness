@@ -5,9 +5,12 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { Prisma } from '@prisma/client';
 import { Response } from 'express';
 import { prismaErrorGenerate } from './prisma-error-generate';
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientValidationError,
+} from '@prisma/client/runtime/library';
 
 const PRISMA_ERRORS = prismaErrorGenerate();
 
@@ -16,12 +19,12 @@ export class PrismaClientExceptionFilter
   extends BaseExceptionFilter
   implements ExceptionFilter
 {
-  catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
+  catch(exception: PrismaClientKnownRequestError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const message = this.shortMessage(exception.message);
 
-    if (exception instanceof Prisma.PrismaClientKnownRequestError) {
+    if (exception instanceof PrismaClientKnownRequestError) {
       if (PRISMA_ERRORS[exception.code]) {
         const status = HttpStatus.CONFLICT;
         response.status(status).json({
@@ -35,7 +38,7 @@ export class PrismaClientExceptionFilter
 
     if (
       exception instanceof Error &&
-      exception instanceof Prisma.PrismaClientValidationError
+      exception instanceof PrismaClientValidationError
     ) {
       response.status(HttpStatus.BAD_REQUEST).json({
         statusCode: HttpStatus.BAD_REQUEST,

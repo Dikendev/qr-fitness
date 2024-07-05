@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { WorkoutPlanController } from '../workout-plan.controller';
+import { WorkoutPlanController } from '../session.controller';
 
 describe('WorkoutPlanController', () => {
   let controller: WorkoutPlanController;

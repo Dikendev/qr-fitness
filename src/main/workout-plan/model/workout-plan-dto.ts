@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { ExerciseSchema } from '../../exercise/model/exercise.model';
 
-export const WorkoutPlanSchema = z.object({
+export const SessionSchema = z.object({
   id: z.string().cuid().optional(),
   name: z.string(),
   description: z.string(),
@@ -12,11 +12,11 @@ export const WorkoutPlanSchema = z.object({
   updatedAt: z.date().optional(),
 });
 
-export const WorkoutPlanCreateSchema = WorkoutPlanSchema.omit({
+export const SessionCreateSchema = SessionSchema.omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
 
-export type CreateWorkoutPlanDto = z.infer<typeof WorkoutPlanCreateSchema>;
-export type WorkoutPlanResponse = z.infer<typeof WorkoutPlanSchema>;
+export type CreateSessionDto = z.infer<typeof SessionCreateSchema>;
+export type SessionResponse = z.infer<typeof SessionSchema>;

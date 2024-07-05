@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { WorkoutPlanRepository } from './repository/workout-plan-repository';
 import { PrismaService } from '../../prisma/prisma.service';
-import {
-  CreateWorkoutPlanDto,
-  WorkoutPlanResponse,
-} from './model/workout-plan-dto';
+import { CreateSessionDto, SessionResponse } from './model/workout-plan-dto';
+import { SessionRepository } from './repository/session-repository';
 
 @Injectable()
-export class WorkoutPlanService implements WorkoutPlanRepository {
+export class SessionService implements SessionRepository {
   exerciseSelect = {
     select: {
       id: true,
@@ -20,7 +17,7 @@ export class WorkoutPlanService implements WorkoutPlanRepository {
     },
   };
 
-  workoutPlanSelect = {
+  sessionSelect = {
     select: {
       id: true,
       name: true,
@@ -34,9 +31,9 @@ export class WorkoutPlanService implements WorkoutPlanRepository {
 
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(body: CreateWorkoutPlanDto): Promise<WorkoutPlanResponse> {
+  async create(body: CreateSessionDto): Promise<SessionResponse> {
     try {
-      const workoutPlan = await this.prisma.$transaction(async (prisma) => {
+      const session = await this.prisma.$transaction(async (prisma) => {
         const connectExercises = body.exercises
           ?.filter((exercise) => exercise.id)
           .map((exercise) => ({ id: exercise.id }));
@@ -53,67 +50,66 @@ export class WorkoutPlanService implements WorkoutPlanRepository {
           };
         });
 
-        const workoutPlan = await prisma.workout.create({
+        const session = await prisma.session.create({
           data: {
             name: body.name,
             description: body.description,
-            workoutType: body.workoutType,
-            userId: body?.userId,
+            sessionGroup: body.workoutType,
             exercises: {
               connect: connectExercises,
               connectOrCreate: exercisesBulk,
             },
           },
-          select: this.workoutPlanSelect.select,
+          select: this.sessionSelect.select,
         });
 
-        return workoutPlan;
+        return session;
       });
 
-      return workoutPlan;
+      return session;
     } catch (error) {
-      throw new Error('Failed to create workout plan');
+      throw new Error('Failed to create session');
     }
   }
 
-  async list(): Promise<WorkoutPlanResponse[]> {
+  async list(): Promise<SessionResponse[]> {
     try {
-      const exercises = this.prisma.workout.findMany({
-        select: this.workoutPlanSelect.select,
+      const session = this.prisma.session.findMany({
+        select: this.sessionSelect.select,
       });
 
-      if (!exercises) {
-        throw new Error('No exercises found');
+      if (!session) {
+        throw new Error('No session found');
       }
 
-      return exercises;
+      return session;
     } catch (error) {
       throw new Error();
     }
   }
 
-  async findById(id: string): Promise<WorkoutPlanResponse> {
-    const workoutPlan = await this.prisma.workout.findUnique({
+  async findById(id: string): Promise<SessionResponse> {
+    const session = await this.prisma.session.findUnique({
       where: { id },
-      select: this.workoutPlanSelect.select,
+      select: this.sessionSelect.select,
     });
 
-    if (!workoutPlan) {
-      throw new Error('Workout plan not found');
+    if (!session) {
+      throw new Error('Session not found');
     }
 
-    return workoutPlan;
+    return session;
   }
 
   async delete(id: string): Promise<string> {
     try {
-      await this.prisma.workout.delete({
+      await this.prisma.session.delete({
         where: { id },
       });
 
-      return `Workout id: ${id} plan deleted`;
+      return `Session id: ${id} deleted`;
     } catch (error) {
-      throw new Error('Failed to delete workout plan');
+      throw new Error('Failed to delete session');
     }
   }
 }

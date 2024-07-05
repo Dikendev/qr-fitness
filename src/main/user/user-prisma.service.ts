@@ -51,21 +51,21 @@ export class UserPrismaService implements UserRepository {
           email: body.email,
           name: body.name,
           password: body.password,
-          workouts: {
-            create: body.workouts?.map((workout) => ({
-              name: workout.name,
-              description: workout.description,
-              workoutType: workout.workoutType,
-              exercises: {
-                create: workout.exercises?.map((exercise) => ({
-                  name: exercise.name,
-                  description: exercise.description,
-                  sets: exercise.sets,
-                  reps: exercise.reps,
-                })),
-              },
-            })),
-          },
+          // worksheet: {
+          //   create: body.workouts?.map((workout) => ({
+          //     name: workout.name,
+          //     description: workout.description,
+          //     sessionGroup: workout.workoutType,
+          //     exercises: {
+          //       create: workout.exercises?.map((exercise) => ({
+          //         name: exercise.name,
+          //         description: exercise.description,
+          //         sets: exercise.sets,
+          //         reps: exercise.reps,
+          //       })),
+          //     },
+          //   })),
+          // },
         },
         select: this.userSelectResponse.select,
       });

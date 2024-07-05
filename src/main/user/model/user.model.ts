@@ -1,20 +1,16 @@
 import { z } from 'zod';
-import { WorkoutPlanSchema } from '../../workout-plan/model/workout-plan-dto';
+import { SessionSchema } from '../../workout-plan/model/workout-plan-dto';
 
 export const UserSchema = z.object({
   id: z.string().cuid().optional(),
   email: z
     .string({ message: 'Need inform a email' })
-    .trim()
-    .email({ message: 'Invalid email' }),
-  name: z
-    .string({ message: 'Need inform a name' })
-    .trim()
-    .min(3)
+    .email({ message: 'Invalid email' })
     .max(255)
-    .nullable(),
+    .trim(),
+  name: z.string({ message: 'Need inform a name' }).trim().min(3).max(255),
   password: z.string({ message: 'Need inform a password' }).min(6).max(255),
-  workouts: z.array(WorkoutPlanSchema).optional(),
+  workouts: z.array(SessionSchema).optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });

@@ -7,7 +7,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { ExerciseModule } from './main/exercise/exercise.module';
 import { UserPrismaService } from './main/user/user-prisma.service';
 import { UserModule } from './main/user/user.module';
-import { WorkoutPlanModule } from './main/workout-plan/workout-plan.module';
+import { SessionModule } from './main/workout-plan/session.module';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { WorkoutPlanModule } from './main/workout-plan/workout-plan.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    WorkoutPlanModule,
+    SessionModule,
     DatabaseModule,
     QrCodeModule,
     MainModule,
